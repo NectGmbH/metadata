@@ -35,6 +35,8 @@ Image input equipment model,Model,272,110,ASCII,Any
 Software used,Software,305,131,ASCII,Any
 Person who created the image,Artist,315,13B,ASCII,Any
 Copyright holder,Copyright,33432,8298,ASCII,Any
+Exif tag,ExifIFDPointer,34665,8769,LONG,1
+GPS tag,GPSInfoIFDPointer,34853,8825,LONG,1
 
 Exif,,A. Tags Relating to Version,,,
 Exif version,ExifVersion,36864,9000,UNDEFINED,4
@@ -42,6 +44,7 @@ Supported Flashpix version,FlashpixVersion,40960,A000,UNDEFINED,4
 
 Exif,,B. Tag Relating to Image Data Characteristics,,,
 Color space information,ColorSpace,40961,A001,SHORT,1
+Gamma,Gamma,42240,A500,RATIONAL,1
 
 Exif,,C. Tags Relating to Image Configuration,,,
 Meaning of each component,ComponentsConfiguration,37121,9101,UNDEFINED,4
@@ -59,6 +62,9 @@ Related audio file,RelatedSoundFile,40964,A004,ASCII,13
 Exif,,F. Tags Relating to Date and Time,,,
 Date and time of original data generation,DateTimeOriginal,36867,9003,ASCII,20
 Date and time of digital data generation,DateTimeDigitized,36868,9004,ASCII,20
+Offset data of DateTime,OffsetTime,36880,9010,ASCII,7
+Offset data of DateTimeOriginal,OffsetTimeOriginal,36881,9011,ASCII,7
+Offset data of DateTimeDigitized,OffsetTimeDigitized,36882,9012,ASCII,7
 DateTime subseconds,SubSecTime,37520,9290,ASCII,Any
 DateTimeOriginal subseconds,SubSecTimeOriginal,37521,9291,ASCII,Any
 DateTimeDigitized subseconds,SubSecTimeDigitized,37522,9292,ASCII,Any
@@ -68,8 +74,14 @@ Exposure time,ExposureTime,33434,829A,RATIONAL,1
 F number,FNumber,33437,829D,RATIONAL,1
 Exposure program,ExposureProgram,34850,8822,SHORT,1
 Spectral sensitivity,SpectralSensitivity,34852,8824,ASCII,Any
-ISO speed rating,ISOSpeedRatings,34855,8827,SHORT,Any
+Photographic Sensitivity,PhotographicSensitivity,34855,8827,SHORT,Any
 Optoelectric conversion factor,OECF,34856,8828,UNDEFINED,Any
+Sensitivity Type,SensitivityType,34864,8830,SHORT,1
+Standard Output Sensitivity,StandardOutputSensitivity,34865,8831,LONG,1
+Recommended ExposureIndex,RecommendedExposureIndex,34866,8832,LONG,1
+ISO Speed,ISOSpeed,34867,8833,LONG,1
+ISO Speed Latitude yyy,ISOSpeedLatitudeyyy,34868,8834,LONG,1
+ISO Speed Latitude zzz,ISOSpeedLatitudezzz,34869,8835,LONG,1
 Shutter speed,ShutterSpeedValue,37377,9201,SRATIONAL,1
 Aperture,ApertureValue,37378,9202,RATIONAL,1
 Brightness,BrightnessValue,37379,9203,SRATIONAL,1
@@ -104,9 +116,25 @@ Saturation,Saturation,41993,A409,SHORT,1
 Sharpness,Sharpness,41994,A40A,SHORT,1
 Device settings description,DeviceSettingDescription,41995,A40B,UNDEFINED,Any
 Subject distance range,SubjectDistanceRange,41996,A40C,SHORT,1
+Source image number of composite image,SourceImageNumberOfCompositeImage,42081,A461,SHORT,2
+Source exposure times of composite image,SourceExposureTimesOfCompositeImage,42082,A462,UNDEFINED,Any
+
+Exif,,G2. Tags Relating to shooting situation,,,
+Temperature,Temperature,37888,9400,SRATIONAL,1
+Humidity,Humidity,37889,9401,RATIONAL,1
+Pressure,Pressure,37890,9402,RATIONAL,1
+WaterDepth,WaterDepth,37891,9403,SRATIONAL,1
+Acceleration,Acceleration,37892,9404,RATIONAL,1
+Camera elevation angle,CameraElevationAngle,37893,9405,SRATIONAL,1
 
 Exif,,H. Other Tags,,,
 Unique image ID,ImageUniqueID,42016,A420,ASCII,33
+Camera Owner Name,CameraOwnerName,42032,A430,ASCII,Any
+Body Serial Number,BodySerialNumber,42033,A431,ASCII,Any
+Lens Specification,LensSpecification,42034,A432,RATIONAL,4
+Lens Make,LensMake,42035,A433,ASCII,Any
+Lens Model,LensModel,42036,A434,ASCII,Any
+Lens Serial Number,LensSerialNumber,42037,A435,ASCII,Any
 
 GPS,,Tags Relating to GPS,,,
 GPS tag version,GPSVersionID,0,0,BYTE,4
@@ -140,3 +168,4 @@ Name of GPS processing method,GPSProcessingMethod,27,1B,UNDEFINED,Any
 Name of GPS area,GPSAreaInformation,28,1C,UNDEFINED,Any
 GPS date,GPSDateStamp,29,1D,ASCII,11
 GPS differential correction,GPSDifferential,30,1E,SHORT,1
+Horizontal positioning error,GPSHPositioningError,31,1F,RATIONAL,1

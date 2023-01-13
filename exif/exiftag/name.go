@@ -93,6 +93,12 @@ const (
 	// Copyright holder - ASCII (Any)
 	Copyright = Tiff | 0x8298
 
+	// Exif tag - LONG (1)
+	ExifIFDPointer = Tiff | 0x8769
+
+	// GPS tag - LONG (1)
+	GPSInfoIFDPointer = Tiff | 0x8825
+
 	// Exif version - UNDEFINED (4)
 	ExifVersion = Exif | 0x9000
 
@@ -101,6 +107,9 @@ const (
 
 	// Color space information - SHORT (1)
 	ColorSpace = Exif | 0xa001
+
+	// Gamma - RATIONAL (1)
+	Gamma = Exif | 0xa500
 
 	// Meaning of each component - UNDEFINED (4)
 	ComponentsConfiguration = Exif | 0x9101
@@ -129,6 +138,15 @@ const (
 	// Date and time of digital data generation - ASCII (20)
 	DateTimeDigitized = Exif | 0x9004
 
+	// Offset data of DateTime - ASCII (7)
+	OffsetTime = Exif | 0x9010
+
+	// Offset data of DateTimeOriginal - ASCII (7)
+	OffsetTimeOriginal = Exif | 0x9011
+
+	// Offset data of DateTimeDigitized - ASCII (7)
+	OffsetTimeDigitized = Exif | 0x9012
+
 	// DateTime subseconds - ASCII (Any)
 	SubSecTime = Exif | 0x9290
 
@@ -150,11 +168,29 @@ const (
 	// Spectral sensitivity - ASCII (Any)
 	SpectralSensitivity = Exif | 0x8824
 
-	// ISO speed rating - SHORT (Any)
-	ISOSpeedRatings = Exif | 0x8827
+	// Photographic Sensitivity - SHORT (Any)
+	PhotographicSensitivity = Exif | 0x8827
 
 	// Optoelectric conversion factor - UNDEFINED (Any)
 	OECF = Exif | 0x8828
+
+	// Sensitivity Type - SHORT (1)
+	SensitivityType = Exif | 0x8830
+
+	// Standard Output Sensitivity - LONG (1)
+	StandardOutputSensitivity = Exif | 0x8831
+
+	// Recommended ExposureIndex - LONG (1)
+	RecommendedExposureIndex = Exif | 0x8832
+
+	// ISO Speed - LONG (1)
+	ISOSpeed = Exif | 0x8833
+
+	// ISO Speed Latitude yyy - LONG (1)
+	ISOSpeedLatitudeyyy = Exif | 0x8834
+
+	// ISO Speed Latitude zzz - LONG (1)
+	ISOSpeedLatitudezzz = Exif | 0x8835
 
 	// Shutter speed - SRATIONAL (1)
 	ShutterSpeedValue = Exif | 0x9201
@@ -258,8 +294,50 @@ const (
 	// Subject distance range - SHORT (1)
 	SubjectDistanceRange = Exif | 0xa40c
 
+	// Source image number of composite image - SHORT (2)
+	SourceImageNumberOfCompositeImage = Exif | 0xa461
+
+	// Source exposure times of composite image - UNDEFINED (Any)
+	SourceExposureTimesOfCompositeImage = Exif | 0xa462
+
+	// Temperature - SRATIONAL (1)
+	Temperature = Exif | 0x9400
+
+	// Humidity - RATIONAL (1)
+	Humidity = Exif | 0x9401
+
+	// Pressure - RATIONAL (1)
+	Pressure = Exif | 0x9402
+
+	// WaterDepth - SRATIONAL (1)
+	WaterDepth = Exif | 0x9403
+
+	// Acceleration - RATIONAL (1)
+	Acceleration = Exif | 0x9404
+
+	// Camera elevation angle - SRATIONAL (1)
+	CameraElevationAngle = Exif | 0x9405
+
 	// Unique image ID - ASCII (33)
 	ImageUniqueID = Exif | 0xa420
+
+	// Camera Owner Name - ASCII (Any)
+	CameraOwnerName = Exif | 0xa430
+
+	// Body Serial Number - ASCII (Any)
+	BodySerialNumber = Exif | 0xa431
+
+	// Lens Specification - RATIONAL (4)
+	LensSpecification = Exif | 0xa432
+
+	// Lens Make - ASCII (Any)
+	LensMake = Exif | 0xa433
+
+	// Lens Model - ASCII (Any)
+	LensModel = Exif | 0xa434
+
+	// Lens Serial Number - ASCII (Any)
+	LensSerialNumber = Exif | 0xa435
 
 	// GPS tag version - BYTE (4)
 	GPSVersionID = GPS | 0x0000
@@ -353,124 +431,154 @@ const (
 
 	// GPS differential correction - SHORT (1)
 	GPSDifferential = GPS | 0x001e
+
+	// Horizontal positioning error - RATIONAL (1)
+	GPSHPositioningError = GPS | 0x001f
 )
 
 var nameMap = map[uint32]name{
-	ImageWidth:                  {"ImageWidth", "Image width"},
-	ImageLength:                 {"ImageLength", "Image height"},
-	BitsPerSample:               {"BitsPerSample", "Number of bits per component"},
-	Compression:                 {"Compression", "Compression scheme"},
-	PhotometricInterpretation:   {"PhotometricInterpretation", "Pixel composition"},
-	Orientation:                 {"Orientation", "Orientation of image"},
-	SamplesPerPixel:             {"SamplesPerPixel", "Number of components"},
-	PlanarConfiguration:         {"PlanarConfiguration", "Image data arrangement"},
-	YCbCrSubSampling:            {"YCbCrSubSampling", "Subsampling ratio of Y to C"},
-	YCbCrPositioning:            {"YCbCrPositioning", "Y and C positioning"},
-	XResolution:                 {"XResolution", "Image resolution in width direction"},
-	YResolution:                 {"YResolution", "Image resolution in height direction"},
-	ResolutionUnit:              {"ResolutionUnit", "Unit of X and Y resolution"},
-	StripOffsets:                {"StripOffsets", "Image data location"},
-	RowsPerStrip:                {"RowsPerStrip", "Number of rows per strip"},
-	StripByteCounts:             {"StripByteCounts", "Bytes per compressed strip"},
-	JPEGInterchangeFormat:       {"JPEGInterchangeFormat", "Offset to JPEG SOI"},
-	JPEGInterchangeFormatLength: {"JPEGInterchangeFormatLength", "Bytes of JPEG data"},
-	TransferFunction:            {"TransferFunction", "Transfer function"},
-	WhitePoint:                  {"WhitePoint", "White point chromaticity"},
-	PrimaryChromaticities:       {"PrimaryChromaticities", "Chromaticities of primaries"},
-	YCbCrCoefficients:           {"YCbCrCoefficients", "Color space transformation matrix coefficients"},
-	ReferenceBlackWhite:         {"ReferenceBlackWhite", "Pair of black and white reference values"},
-	DateTime:                    {"DateTime", "File change date and time"},
-	ImageDescription:            {"ImageDescription", "Image title"},
-	Make:                        {"Make", "Image input equipment manufacturer"},
-	Model:                       {"Model", "Image input equipment model"},
-	Software:                    {"Software", "Software used"},
-	Artist:                      {"Artist", "Person who created the image"},
-	Copyright:                   {"Copyright", "Copyright holder"},
-	ExifVersion:                 {"ExifVersion", "Exif version"},
-	FlashpixVersion:             {"FlashpixVersion", "Supported Flashpix version"},
-	ColorSpace:                  {"ColorSpace", "Color space information"},
-	ComponentsConfiguration:     {"ComponentsConfiguration", "Meaning of each component"},
-	CompressedBitsPerPixel:      {"CompressedBitsPerPixel", "Image compression mode"},
-	PixelXDimension:             {"PixelXDimension", "Valid image width"},
-	PixelYDimension:             {"PixelYDimension", "Valid image height"},
-	MakerNote:                   {"MakerNote", "Manufacturer notes"},
-	UserComment:                 {"UserComment", "User comments"},
-	RelatedSoundFile:            {"RelatedSoundFile", "Related audio file"},
-	DateTimeOriginal:            {"DateTimeOriginal", "Date and time of original data generation"},
-	DateTimeDigitized:           {"DateTimeDigitized", "Date and time of digital data generation"},
-	SubSecTime:                  {"SubSecTime", "DateTime subseconds"},
-	SubSecTimeOriginal:          {"SubSecTimeOriginal", "DateTimeOriginal subseconds"},
-	SubSecTimeDigitized:         {"SubSecTimeDigitized", "DateTimeDigitized subseconds"},
-	ExposureTime:                {"ExposureTime", "Exposure time"},
-	FNumber:                     {"FNumber", "F number"},
-	ExposureProgram:             {"ExposureProgram", "Exposure program"},
-	SpectralSensitivity:         {"SpectralSensitivity", "Spectral sensitivity"},
-	ISOSpeedRatings:             {"ISOSpeedRatings", "ISO speed rating"},
-	OECF:                        {"OECF", "Optoelectric conversion factor"},
-	ShutterSpeedValue:           {"ShutterSpeedValue", "Shutter speed"},
-	ApertureValue:               {"ApertureValue", "Aperture"},
-	BrightnessValue:             {"BrightnessValue", "Brightness"},
-	ExposureBiasValue:           {"ExposureBiasValue", "Exposure bias"},
-	MaxApertureValue:            {"MaxApertureValue", "Maximum lens aperture"},
-	SubjectDistance:             {"SubjectDistance", "Subject distance"},
-	MeteringMode:                {"MeteringMode", "Metering mode"},
-	LightSource:                 {"LightSource", "Light source"},
-	Flash:                       {"Flash", "Flash"},
-	FocalLength:                 {"FocalLength", "Lens focal length"},
-	SubjectArea:                 {"SubjectArea", "Subject area"},
-	FlashEnergy:                 {"FlashEnergy", "Flash energy"},
-	SpatialFrequencyResponse:    {"SpatialFrequencyResponse", "Spatial frequency response"},
-	FocalPlaneXResolution:       {"FocalPlaneXResolution", "Focal plane X resolution"},
-	FocalPlaneYResolution:       {"FocalPlaneYResolution", "Focal plane Y resolution"},
-	FocalPlaneResolutionUnit:    {"FocalPlaneResolutionUnit", "Focal plane resolution unit"},
-	SubjectLocation:             {"SubjectLocation", "Subject location"},
-	ExposureIndex:               {"ExposureIndex", "Exposure index"},
-	SensingMethod:               {"SensingMethod", "Sensing method"},
-	FileSource:                  {"FileSource", "File source"},
-	SceneType:                   {"SceneType", "Scene type"},
-	CFAPattern:                  {"CFAPattern", "CFA pattern"},
-	CustomRendered:              {"CustomRendered", "Custom image processing"},
-	ExposureMode:                {"ExposureMode", "Exposure mode"},
-	WhiteBalance:                {"WhiteBalance", "White balance"},
-	DigitalZoomRatio:            {"DigitalZoomRatio", "Digital zoom ratio"},
-	FocalLengthIn35mmFilm:       {"FocalLengthIn35mmFilm", "Focal length in 35 mm film"},
-	SceneCaptureType:            {"SceneCaptureType", "Scene capture type"},
-	GainControl:                 {"GainControl", "Gain control"},
-	Contrast:                    {"Contrast", "Contrast"},
-	Saturation:                  {"Saturation", "Saturation"},
-	Sharpness:                   {"Sharpness", "Sharpness"},
-	DeviceSettingDescription:    {"DeviceSettingDescription", "Device settings description"},
-	SubjectDistanceRange:        {"SubjectDistanceRange", "Subject distance range"},
-	ImageUniqueID:               {"ImageUniqueID", "Unique image ID"},
-	GPSVersionID:                {"GPSVersionID", "GPS tag version"},
-	GPSLatitudeRef:              {"GPSLatitudeRef", "North or South Latitude"},
-	GPSLatitude:                 {"GPSLatitude", "Latitude"},
-	GPSLongitudeRef:             {"GPSLongitudeRef", "East or West Longitude"},
-	GPSLongitude:                {"GPSLongitude", "Longitude"},
-	GPSAltitudeRef:              {"GPSAltitudeRef", "Altitude reference"},
-	GPSAltitude:                 {"GPSAltitude", "Altitude"},
-	GPSTimeStamp:                {"GPSTimeStamp", "GPS time (atomic clock)"},
-	GPSSatellites:               {"GPSSatellites", "GPS satellites used for measurement"},
-	GPSStatus:                   {"GPSStatus", "GPS receiver status"},
-	GPSMeasureMode:              {"GPSMeasureMode", "GPS measurement mode"},
-	GPSDOP:                      {"GPSDOP", "Measurement precision"},
-	GPSSpeedRef:                 {"GPSSpeedRef", "Speed unit"},
-	GPSSpeed:                    {"GPSSpeed", "Speed of GPS receiver"},
-	GPSTrackRef:                 {"GPSTrackRef", "Reference for direction of movement"},
-	GPSTrack:                    {"GPSTrack", "Direction of movement"},
-	GPSImgDirectionRef:          {"GPSImgDirectionRef", "Reference for direction of image"},
-	GPSImgDirection:             {"GPSImgDirection", "Direction of image"},
-	GPSMapDatum:                 {"GPSMapDatum", "Geodetic survey data used"},
-	GPSDestLatitudeRef:          {"GPSDestLatitudeRef", "Reference for latitude of destination"},
-	GPSDestLatitude:             {"GPSDestLatitude", "Latitude of destination"},
-	GPSDestLongitudeRef:         {"GPSDestLongitudeRef", "Reference for longitude of destination"},
-	GPSDestLongitude:            {"GPSDestLongitude", "Longitude of destination"},
-	GPSDestBearingRef:           {"GPSDestBearingRef", "Reference for bearing of destination"},
-	GPSDestBearing:              {"GPSDestBearing", "Bearing of destination"},
-	GPSDestDistanceRef:          {"GPSDestDistanceRef", "Reference for distance to destination"},
-	GPSDestDistance:             {"GPSDestDistance", "Distance to destination"},
-	GPSProcessingMethod:         {"GPSProcessingMethod", "Name of GPS processing method"},
-	GPSAreaInformation:          {"GPSAreaInformation", "Name of GPS area"},
-	GPSDateStamp:                {"GPSDateStamp", "GPS date"},
-	GPSDifferential:             {"GPSDifferential", "GPS differential correction"},
+	ImageWidth:                          {"ImageWidth", "Image width"},
+	ImageLength:                         {"ImageLength", "Image height"},
+	BitsPerSample:                       {"BitsPerSample", "Number of bits per component"},
+	Compression:                         {"Compression", "Compression scheme"},
+	PhotometricInterpretation:           {"PhotometricInterpretation", "Pixel composition"},
+	Orientation:                         {"Orientation", "Orientation of image"},
+	SamplesPerPixel:                     {"SamplesPerPixel", "Number of components"},
+	PlanarConfiguration:                 {"PlanarConfiguration", "Image data arrangement"},
+	YCbCrSubSampling:                    {"YCbCrSubSampling", "Subsampling ratio of Y to C"},
+	YCbCrPositioning:                    {"YCbCrPositioning", "Y and C positioning"},
+	XResolution:                         {"XResolution", "Image resolution in width direction"},
+	YResolution:                         {"YResolution", "Image resolution in height direction"},
+	ResolutionUnit:                      {"ResolutionUnit", "Unit of X and Y resolution"},
+	StripOffsets:                        {"StripOffsets", "Image data location"},
+	RowsPerStrip:                        {"RowsPerStrip", "Number of rows per strip"},
+	StripByteCounts:                     {"StripByteCounts", "Bytes per compressed strip"},
+	JPEGInterchangeFormat:               {"JPEGInterchangeFormat", "Offset to JPEG SOI"},
+	JPEGInterchangeFormatLength:         {"JPEGInterchangeFormatLength", "Bytes of JPEG data"},
+	TransferFunction:                    {"TransferFunction", "Transfer function"},
+	WhitePoint:                          {"WhitePoint", "White point chromaticity"},
+	PrimaryChromaticities:               {"PrimaryChromaticities", "Chromaticities of primaries"},
+	YCbCrCoefficients:                   {"YCbCrCoefficients", "Color space transformation matrix coefficients"},
+	ReferenceBlackWhite:                 {"ReferenceBlackWhite", "Pair of black and white reference values"},
+	DateTime:                            {"DateTime", "File change date and time"},
+	ImageDescription:                    {"ImageDescription", "Image title"},
+	Make:                                {"Make", "Image input equipment manufacturer"},
+	Model:                               {"Model", "Image input equipment model"},
+	Software:                            {"Software", "Software used"},
+	Artist:                              {"Artist", "Person who created the image"},
+	Copyright:                           {"Copyright", "Copyright holder"},
+	ExifIFDPointer:                      {"ExifIFDPointer", "Exif tag"},
+	GPSInfoIFDPointer:                   {"GPSInfoIFDPointer", "GPS tag"},
+	ExifVersion:                         {"ExifVersion", "Exif version"},
+	FlashpixVersion:                     {"FlashpixVersion", "Supported Flashpix version"},
+	ColorSpace:                          {"ColorSpace", "Color space information"},
+	Gamma:                               {"Gamma", "Gamma"},
+	ComponentsConfiguration:             {"ComponentsConfiguration", "Meaning of each component"},
+	CompressedBitsPerPixel:              {"CompressedBitsPerPixel", "Image compression mode"},
+	PixelXDimension:                     {"PixelXDimension", "Valid image width"},
+	PixelYDimension:                     {"PixelYDimension", "Valid image height"},
+	MakerNote:                           {"MakerNote", "Manufacturer notes"},
+	UserComment:                         {"UserComment", "User comments"},
+	RelatedSoundFile:                    {"RelatedSoundFile", "Related audio file"},
+	DateTimeOriginal:                    {"DateTimeOriginal", "Date and time of original data generation"},
+	DateTimeDigitized:                   {"DateTimeDigitized", "Date and time of digital data generation"},
+	OffsetTime:                          {"OffsetTime", "Offset data of DateTime"},
+	OffsetTimeOriginal:                  {"OffsetTimeOriginal", "Offset data of DateTimeOriginal"},
+	OffsetTimeDigitized:                 {"OffsetTimeDigitized", "Offset data of DateTimeDigitized"},
+	SubSecTime:                          {"SubSecTime", "DateTime subseconds"},
+	SubSecTimeOriginal:                  {"SubSecTimeOriginal", "DateTimeOriginal subseconds"},
+	SubSecTimeDigitized:                 {"SubSecTimeDigitized", "DateTimeDigitized subseconds"},
+	ExposureTime:                        {"ExposureTime", "Exposure time"},
+	FNumber:                             {"FNumber", "F number"},
+	ExposureProgram:                     {"ExposureProgram", "Exposure program"},
+	SpectralSensitivity:                 {"SpectralSensitivity", "Spectral sensitivity"},
+	PhotographicSensitivity:             {"PhotographicSensitivity", "Photographic Sensitivity"},
+	OECF:                                {"OECF", "Optoelectric conversion factor"},
+	SensitivityType:                     {"SensitivityType", "Sensitivity Type"},
+	StandardOutputSensitivity:           {"StandardOutputSensitivity", "Standard Output Sensitivity"},
+	RecommendedExposureIndex:            {"RecommendedExposureIndex", "Recommended ExposureIndex"},
+	ISOSpeed:                            {"ISOSpeed", "ISO Speed"},
+	ISOSpeedLatitudeyyy:                 {"ISOSpeedLatitudeyyy", "ISO Speed Latitude yyy"},
+	ISOSpeedLatitudezzz:                 {"ISOSpeedLatitudezzz", "ISO Speed Latitude zzz"},
+	ShutterSpeedValue:                   {"ShutterSpeedValue", "Shutter speed"},
+	ApertureValue:                       {"ApertureValue", "Aperture"},
+	BrightnessValue:                     {"BrightnessValue", "Brightness"},
+	ExposureBiasValue:                   {"ExposureBiasValue", "Exposure bias"},
+	MaxApertureValue:                    {"MaxApertureValue", "Maximum lens aperture"},
+	SubjectDistance:                     {"SubjectDistance", "Subject distance"},
+	MeteringMode:                        {"MeteringMode", "Metering mode"},
+	LightSource:                         {"LightSource", "Light source"},
+	Flash:                               {"Flash", "Flash"},
+	FocalLength:                         {"FocalLength", "Lens focal length"},
+	SubjectArea:                         {"SubjectArea", "Subject area"},
+	FlashEnergy:                         {"FlashEnergy", "Flash energy"},
+	SpatialFrequencyResponse:            {"SpatialFrequencyResponse", "Spatial frequency response"},
+	FocalPlaneXResolution:               {"FocalPlaneXResolution", "Focal plane X resolution"},
+	FocalPlaneYResolution:               {"FocalPlaneYResolution", "Focal plane Y resolution"},
+	FocalPlaneResolutionUnit:            {"FocalPlaneResolutionUnit", "Focal plane resolution unit"},
+	SubjectLocation:                     {"SubjectLocation", "Subject location"},
+	ExposureIndex:                       {"ExposureIndex", "Exposure index"},
+	SensingMethod:                       {"SensingMethod", "Sensing method"},
+	FileSource:                          {"FileSource", "File source"},
+	SceneType:                           {"SceneType", "Scene type"},
+	CFAPattern:                          {"CFAPattern", "CFA pattern"},
+	CustomRendered:                      {"CustomRendered", "Custom image processing"},
+	ExposureMode:                        {"ExposureMode", "Exposure mode"},
+	WhiteBalance:                        {"WhiteBalance", "White balance"},
+	DigitalZoomRatio:                    {"DigitalZoomRatio", "Digital zoom ratio"},
+	FocalLengthIn35mmFilm:               {"FocalLengthIn35mmFilm", "Focal length in 35 mm film"},
+	SceneCaptureType:                    {"SceneCaptureType", "Scene capture type"},
+	GainControl:                         {"GainControl", "Gain control"},
+	Contrast:                            {"Contrast", "Contrast"},
+	Saturation:                          {"Saturation", "Saturation"},
+	Sharpness:                           {"Sharpness", "Sharpness"},
+	DeviceSettingDescription:            {"DeviceSettingDescription", "Device settings description"},
+	SubjectDistanceRange:                {"SubjectDistanceRange", "Subject distance range"},
+	SourceImageNumberOfCompositeImage:   {"SourceImageNumberOfCompositeImage", "Source image number of composite image"},
+	SourceExposureTimesOfCompositeImage: {"SourceExposureTimesOfCompositeImage", "Source exposure times of composite image"},
+	Temperature:                         {"Temperature", "Temperature"},
+	Humidity:                            {"Humidity", "Humidity"},
+	Pressure:                            {"Pressure", "Pressure"},
+	WaterDepth:                          {"WaterDepth", "WaterDepth"},
+	Acceleration:                        {"Acceleration", "Acceleration"},
+	CameraElevationAngle:                {"CameraElevationAngle", "Camera elevation angle"},
+	ImageUniqueID:                       {"ImageUniqueID", "Unique image ID"},
+	CameraOwnerName:                     {"CameraOwnerName", "Camera Owner Name"},
+	BodySerialNumber:                    {"BodySerialNumber", "Body Serial Number"},
+	LensSpecification:                   {"LensSpecification", "Lens Specification"},
+	LensMake:                            {"LensMake", "Lens Make"},
+	LensModel:                           {"LensModel", "Lens Model"},
+	LensSerialNumber:                    {"LensSerialNumber", "Lens Serial Number"},
+	GPSVersionID:                        {"GPSVersionID", "GPS tag version"},
+	GPSLatitudeRef:                      {"GPSLatitudeRef", "North or South Latitude"},
+	GPSLatitude:                         {"GPSLatitude", "Latitude"},
+	GPSLongitudeRef:                     {"GPSLongitudeRef", "East or West Longitude"},
+	GPSLongitude:                        {"GPSLongitude", "Longitude"},
+	GPSAltitudeRef:                      {"GPSAltitudeRef", "Altitude reference"},
+	GPSAltitude:                         {"GPSAltitude", "Altitude"},
+	GPSTimeStamp:                        {"GPSTimeStamp", "GPS time (atomic clock)"},
+	GPSSatellites:                       {"GPSSatellites", "GPS satellites used for measurement"},
+	GPSStatus:                           {"GPSStatus", "GPS receiver status"},
+	GPSMeasureMode:                      {"GPSMeasureMode", "GPS measurement mode"},
+	GPSDOP:                              {"GPSDOP", "Measurement precision"},
+	GPSSpeedRef:                         {"GPSSpeedRef", "Speed unit"},
+	GPSSpeed:                            {"GPSSpeed", "Speed of GPS receiver"},
+	GPSTrackRef:                         {"GPSTrackRef", "Reference for direction of movement"},
+	GPSTrack:                            {"GPSTrack", "Direction of movement"},
+	GPSImgDirectionRef:                  {"GPSImgDirectionRef", "Reference for direction of image"},
+	GPSImgDirection:                     {"GPSImgDirection", "Direction of image"},
+	GPSMapDatum:                         {"GPSMapDatum", "Geodetic survey data used"},
+	GPSDestLatitudeRef:                  {"GPSDestLatitudeRef", "Reference for latitude of destination"},
+	GPSDestLatitude:                     {"GPSDestLatitude", "Latitude of destination"},
+	GPSDestLongitudeRef:                 {"GPSDestLongitudeRef", "Reference for longitude of destination"},
+	GPSDestLongitude:                    {"GPSDestLongitude", "Longitude of destination"},
+	GPSDestBearingRef:                   {"GPSDestBearingRef", "Reference for bearing of destination"},
+	GPSDestBearing:                      {"GPSDestBearing", "Bearing of destination"},
+	GPSDestDistanceRef:                  {"GPSDestDistanceRef", "Reference for distance to destination"},
+	GPSDestDistance:                     {"GPSDestDistance", "Distance to destination"},
+	GPSProcessingMethod:                 {"GPSProcessingMethod", "Name of GPS processing method"},
+	GPSAreaInformation:                  {"GPSAreaInformation", "Name of GPS area"},
+	GPSDateStamp:                        {"GPSDateStamp", "GPS date"},
+	GPSDifferential:                     {"GPSDifferential", "GPS differential correction"},
+	GPSHPositioningError:                {"GPSHPositioningError", "Horizontal positioning error"},
 }
