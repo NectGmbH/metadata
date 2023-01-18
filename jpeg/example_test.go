@@ -5,7 +5,7 @@ import (
 	"io"
 	"os"
 
-	"github.com/tajtiattila/metadata/jpeg"
+	"github.com/NectGmbH/metadata/jpeg"
 )
 
 // Use Scanner to find the Exif in a JPEG file.

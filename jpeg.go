@@ -3,7 +3,7 @@ package metadata
 import (
 	"io"
 
-	xjpeg "github.com/tajtiattila/metadata/jpeg"
+	xjpeg "github.com/NectGmbH/metadata/jpeg"
 )
 
 var jpegExifPfx = []byte("Exif\x00\x00")

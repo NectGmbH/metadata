@@ -6,7 +6,7 @@ import (
 	"log"
 	"os"
 
-	"github.com/tajtiattila/metadata"
+	"github.com/NectGmbH/metadata"
 )
 
 func main() {

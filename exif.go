@@ -4,8 +4,8 @@ import (
 	"fmt"
 	"time"
 
-	"github.com/tajtiattila/metadata/exif"
-	"github.com/tajtiattila/metadata/exif/exiftag"
+	"github.com/NectGmbH/metadata/exif"
+	"github.com/NectGmbH/metadata/exif/exiftag"
 )
 
 func FromExifBytes(p []byte) (*Metadata, error) {

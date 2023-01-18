@@ -5,7 +5,7 @@ import (
 	"math"
 	"time"
 
-	"github.com/tajtiattila/metadata/exif/exiftag"
+	"github.com/NectGmbH/metadata/exif/exiftag"
 )
 
 // New initializes a new Exif structure for an image
